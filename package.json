@@ -1,12 +1,15 @@
 {
-  "name": "excalidraw-integration",
+  "name": "matty-graphic-design-tool",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.1.0",
+  "description": "A web-based graphic design tool built with React and Excalidraw.",
+  "author": "Ritesh Maurya",
+  "license": "MIT",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "lint": "eslint .",
+    "lint": "eslint.",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -18,7 +21,6 @@
     "formik": "^2.4.6",
     "framer-motion": "^12.23.12",
     "lucide-react": "^0.539.0",
-    "multer": "^2.0.2",
     "react": "^18.2.0",
     "react-dom": "^18.3.1",
     "react-hot-toast": "^2.6.0",

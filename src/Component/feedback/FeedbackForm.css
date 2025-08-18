@@ -1,0 +1,130 @@
+/* FeedbackForm.css */
+
+/* Page Layout */
+.feedback-page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: #ffffff;
+  color: #111;
+}
+
+/* Centering wrapper */
+.feedback-container {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2.5rem 1rem;
+}
+
+/* Card */
+.feedback-card {
+  background: #fff;
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+  max-width: 420px;
+  width: 100%;
+  border: 1px solid #e5e7eb;
+  transition: all 0.3s ease;
+}
+.feedback-card:hover {
+  transform: scale(1.02);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+.feedback-title {
+  font-size: 1.6rem;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  letter-spacing: 0.5px;
+  color: #111827;
+}
+
+/* Alert messages */
+.alert {
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
+  transition: background 0.3s ease;
+}
+.alert.success {
+  background: #d1fae5;
+  color: #065f46;
+}
+.alert.error {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+/* Rating */
+.rating-label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+  color: #4b5563;
+}
+.rating-stars {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+.rating-stars svg {
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+.rating-stars svg:hover {
+  transform: scale(1.25) rotate(3deg);
+}
+
+/* Comments */
+.feedback-textarea {
+  width: 100%;
+  border: 1px solid #d1d5db;
+  background: #f9fafb;
+  color: #111;
+  border-radius: 0.5rem;
+  padding: 0.75rem;
+  margin-bottom: 1.5rem;
+  resize: none;
+  transition: border 0.3s ease, box-shadow 0.3s ease;
+}
+.feedback-textarea:focus {
+  border: 1px solid #9ca3af;
+  outline: none;
+  box-shadow: 0 0 0 2px #d1d5db;
+}
+
+/* Submit button */
+.feedback-button {
+  width: 100%;
+  background: #000;
+  color: #fff;
+  font-weight: 600;
+  padding: 0.75rem;
+  border-radius: 0.6rem;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.feedback-button:hover {
+  background: #1f2937;
+  transform: translateY(-2px);
+}
+.feedback-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Footer text */
+.feedback-footer {
+  font-size: 0.85rem;
+  color: #6b7280;
+  margin-top: 1.5rem;
+  text-align: center;
+}

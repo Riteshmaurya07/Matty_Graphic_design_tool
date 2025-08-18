@@ -72,3 +72,9 @@
 .delay-1000 {
   animation-delay: 1s;
 }
+.delay-1200 {
+  animation-delay: 1.2s;
+}
+.delay-1400 {
+  animation-delay: 1.4s;
+}

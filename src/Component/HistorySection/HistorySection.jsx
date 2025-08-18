@@ -1,6 +1,8 @@
 import React, { useRef } from "react";
 import { animated, useSpring, useTransition, config } from "@react-spring/web";
 import { useScroll } from "@use-gesture/react";
+import './HistorySection.css';
+
 const mockProjects = [
   {
     id: 1,

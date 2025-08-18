@@ -1,15 +1,23 @@
-import React, { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import "./Canvas.css";
 
 function Canvas() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Redirect to editor page when this component mounts
-    navigate('/editor');
+    const timer = setTimeout(() => {
+      navigate("/editor");
+    }, 800); // small delay for loader animation
+
+    return () => clearTimeout(timer);
   }, [navigate]);
 
-  return null; // Optional: you can return a loading spinner if you want
+  return (
+    <div className="canvas-container">
+      <div className="loader"></div>
+    </div>
+  );
 }
 
 export default Canvas;

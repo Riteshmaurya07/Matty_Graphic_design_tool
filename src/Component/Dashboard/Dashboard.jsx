@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import HistorySection from "../HistorySection/HistorySection";
 import DOMPurify from "dompurify";
+import "./dashboard.css";
+
 
 export default function App() {
   const navigate = useNavigate();

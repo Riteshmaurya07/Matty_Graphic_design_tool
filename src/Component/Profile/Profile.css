@@ -1,0 +1,167 @@
+/* Profile.css */
+
+/* General container */
+.profile-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 2.5rem;
+}
+
+/* Profile card */
+.profile-card {
+  background: #f3f4f6; /* Tailwind gray-200 */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  border-radius: 12px;
+  padding: 24px;
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+}
+
+/* Profile image */
+.profile-card img {
+  border-radius: 50%;
+  width: 160px;
+  height: 160px;
+  object-fit: cover;
+  margin: 0 auto;
+}
+
+/* Name */
+.profile-card h2 {
+  margin-top: 1rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #111827;
+}
+
+/* Email */
+.profile-card p {
+  color: #4b5563;
+  margin-top: 4px;
+}
+
+/* Buttons */
+.profile-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.profile-buttons button {
+  padding: 0.5rem 1.25rem;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+}
+
+.profile-buttons .edit-btn {
+  background: #6b7280; /* gray-500 */
+  color: white;
+}
+
+.profile-buttons .edit-btn:hover {
+  background: #111827; /* black */
+}
+
+.profile-buttons .logout-btn {
+  background: #6b7280;
+  color: white;
+}
+
+.profile-buttons .logout-btn:hover {
+  background: #111827;
+}
+
+/* Modal styles */
+.ReactModal__Overlay {
+  background: rgba(0, 0, 0, 0.5) !important;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 80px;
+}
+
+.ReactModal__Content {
+  background: white;
+  padding: 24px;
+  border-radius: 16px;
+  max-width: 500px;
+  width: 90%;
+  outline: none;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+/* Edit profile image */
+.edit-photo-wrapper {
+  position: relative;
+  width: 128px;
+  height: 128px;
+}
+
+.edit-photo-wrapper img {
+  border-radius: 50%;
+  width: 128px;
+  height: 128px;
+  object-fit: cover;
+  border: 2px solid #d1d5db;
+}
+
+.edit-photo-wrapper label {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  background: #374151;
+  color: white;
+  border-radius: 50%;
+  padding: 8px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.edit-photo-wrapper label:hover {
+  background: #111827;
+}
+
+/* Input */
+.modal-input {
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  padding: 8px;
+  width: 100%;
+  text-align: center;
+  margin-top: 1rem;
+}
+
+/* Modal buttons */
+.modal-buttons {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  justify-content: center;
+}
+
+.modal-buttons .save-btn {
+  background: #22c55e; /* green-500 */
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  transition: 0.2s;
+}
+
+.modal-buttons .save-btn:hover {
+  background: #16a34a; /* green-600 */
+}
+
+.modal-buttons .cancel-btn {
+  background: #e5e7eb; /* gray-300 */
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  transition: 0.2s;
+}
+
+.modal-buttons .cancel-btn:hover {
+  background: #d1d5db; /* gray-400 */
+}
