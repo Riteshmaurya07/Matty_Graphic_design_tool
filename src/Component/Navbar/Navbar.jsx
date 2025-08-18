@@ -46,7 +46,7 @@ export default function Navbar() {
 
         {/* Desktop Menu */}
         <ul className="navbar-links">
-          {navLinks.slice(0, 4).map((link) => (
+          {navLinks.map((link) => (
             <li key={link.name}>
               <NavLink
                 to={link.path}
