@@ -2,7 +2,7 @@ import React from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
-import  "./ContactForm.css";
+import "./ContactForm.css";
 
 const ContactForm = () => {
   const initialValues = { name: "", email: "", message: "" };
@@ -15,7 +15,11 @@ const ContactForm = () => {
 
   const handleSubmit = async (values, { resetForm, setSubmitting }) => {
     try {
-      await axios.post("http://localhost:4001/api/contact", values);
+      await axios.post(
+        process.env.backendUri + "/api/contact" ||
+          "http://localhost:4001/api/contact",
+        values
+      );
       alert("Message sent successfully!");
       resetForm();
     } catch (error) {
@@ -27,74 +31,66 @@ const ContactForm = () => {
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-white text-black justify-center items-center px-4">
-      <div className="bg-white p-8 rounded-xl shadow-lg w-full max-w-lg border border-gray-200 animate-slideUpFade">
-        <h2 className="text-3xl font-bold mb-6 text-center animate-fadeInUp delay-200">
-          Contact Us
-        </h2>
+    <div className="contact-container">
+      <div className="contact-card">
+        <h2 className="contact-title">Contact Us</h2>
         <Formik
           initialValues={initialValues}
           validationSchema={validationSchema}
           onSubmit={handleSubmit}
         >
           {({ isSubmitting }) => (
-            <Form className="space-y-5">
-              <div className="animate-fadeInUp delay-400">
-                <label className="block mb-2 font-medium text-gray-700">
-                  Your Name
-                </label>
+            <Form>
+              <div className="form-group">
+                <label className="form-label">Your Name</label>
                 <Field
                   type="text"
                   name="name"
                   placeholder="Enter your name"
-                  className="w-full border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-gray-400"
+                  className="form-input"
                 />
                 <ErrorMessage
                   name="name"
                   component="div"
-                  className="text-red-500 text-sm mt-1"
+                  className="error-text"
                 />
               </div>
 
-              <div className="animate-fadeInUp delay-600">
-                <label className="block mb-2 font-medium text-gray-700">
-                  Your Email
-                </label>
+              <div className="form-group">
+                <label className="form-label">Your Email</label>
                 <Field
                   type="email"
                   name="email"
                   placeholder="Enter your email"
-                  className="w-full border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-gray-400"
+                  className="form-input"
                 />
                 <ErrorMessage
                   name="email"
                   component="div"
-                  className="text-red-500 text-sm mt-1"
+                  className="error-text"
                 />
               </div>
 
-              <div className="animate-fadeInUp delay-800">
-                <label className="block mb-2 font-medium text-gray-700">
-                  Your Message
-                </label>
+              <div className="form-group">
+                <label className="form-label">Your Message</label>
                 <Field
                   as="textarea"
                   name="message"
                   placeholder="Write your message..."
                   rows="4"
-                  className="w-full border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-gray-400"
+                  className="form-textarea"
                 />
                 <ErrorMessage
                   name="message"
                   component="div"
-                  className="text-red-500 text-sm mt-1"
+                  className="error-text"
                 />
               </div>
 
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full bg-black text-white font-semibold py-3 rounded-lg hover:bg-gray-800 transition-all duration-300 transform hover:-translate-y-1 disabled:opacity-50 animate-fadeInUp delay-1000"
+                className="submit-btn"
               >
                 {isSubmitting ? "Sending..." : "Send Message"}
               </button>

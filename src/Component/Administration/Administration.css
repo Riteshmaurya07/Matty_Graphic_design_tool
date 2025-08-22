@@ -1,0 +1,215 @@
+/* ===== General Layout ===== */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f3f4f6;
+  color: #333;
+}
+
+.admin-container {
+  display: flex;
+  height: 100vh;
+}
+
+/* ===== Sidebar ===== */
+.sidebar {
+  width: 260px;
+  background: #fff;
+  box-shadow: 2px 0 6px rgba(0, 0, 0, 0.1);
+  flex-shrink: 0;
+}
+
+.sidebar .logo {
+  padding: 16px;
+  font-size: 22px;
+  font-weight: bold;
+  color: #6b21a8; /* Purple */
+  border-bottom: 1px solid #eee;
+}
+
+.sidebar nav {
+  margin-top: 12px;
+}
+
+.sidebar button {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 12px 16px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 15px;
+  transition: background 0.2s ease-in;
+}
+
+.sidebar button:hover {
+  background: #f3f3f3;
+}
+
+.sidebar button.active {
+  background: #e5e7eb;
+  font-weight: 600;
+}
+
+/* ===== Header ===== */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background: #fff;
+  border-bottom: 1px solid #ddd;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.header h1 {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.header input {
+  padding: 6px 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+/* ===== Main Content ===== */
+.main {
+  flex: 1;
+  overflow-y: auto;
+  background: #f3f4f6;
+}
+
+/* ===== Cards ===== */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+  padding: 16px;
+}
+
+.card {
+  background: #fff;
+  padding: 16px;
+  border-radius: 8px;
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card h2 {
+  font-size: 16px;
+  margin-bottom: 6px;
+}
+
+.card p {
+  font-size: 24px;
+  font-weight: bold;
+  color: #6b21a8;
+}
+
+/* ===== Section Wrappers ===== */
+.section {
+  padding: 16px;
+}
+
+.section-box {
+  background: #fff;
+  padding: 16px;
+  border-radius: 8px;
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
+  height: 320px;
+}
+
+/* ===== Table Styling ===== */
+.table-container {
+  margin-top: 16px;
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+table th,
+table td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+table th {
+  background: #fafafa;
+  font-weight: 600;
+}
+
+table tr:hover {
+  background: #f9f9f9;
+}
+
+/* ===== Buttons ===== */
+button {
+  cursor: pointer;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 14px;
+  transition: 0.2s ease-in-out;
+}
+
+.btn-primary {
+  background: #6b21a8;
+  color: #fff;
+}
+
+.btn-danger {
+  background: #dc2626;
+  color: #fff;
+}
+
+.btn-warning {
+  background: #f59e0b;
+  color: #fff;
+}
+
+.btn-blue {
+  background: #3b82f6;
+  color: #fff;
+}
+
+.btn-gray {
+  background: #9ca3af;
+  color: #fff;
+}
+
+button:hover {
+  opacity: 0.9;
+}
+
+/* ===== Form Inputs ===== */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="file"] {
+  width: 100%;
+  border: 1px solid #ccc;
+  padding: 8px 10px;
+  border-radius: 6px;
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+/* ===== Labels, Toggles ===== */
+label {
+  font-size: 14px;
+  cursor: pointer;
+}
+
+input[type="checkbox"] {
+  cursor: pointer;
+}

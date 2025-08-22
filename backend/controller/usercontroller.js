@@ -2,39 +2,50 @@ import { User } from "../models/usermodel.js";
 import bcrypt from "bcryptjs";
 import { v2 as cloudinary } from "cloudinary";
 import createTokenAndSaveCookies from "../jwt/AuthToken.js";
-
-// REGISTER
+import streamifier from "streamifier";
+// ================= REGISTER =================
 export const register = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, password, confirmPassword } = req.body;
 
-    // Check if photo is present
-    if (!req.files || !req.files.photo) {
+    // Validate fields
+    if (!name || !email || !password || !confirmPassword) {
+      return res.status(400).json({ message: "All fields are required" });
+    }
+
+    if (password !== confirmPassword) {
+      return res.status(400).json({ message: "Passwords do not match" });
+    }
+
+    if (!req.file) {
       return res.status(400).json({ message: "User photo is required" });
     }
 
-    const { photo } = req.files;
-    const allowedFormats = ["image/jpeg", "image/png", "image/webp"];
-    if (!allowedFormats.includes(photo.mimetype)) {
-      return res.status(400).json({ message: "Invalid photo format" });
-    }
-
-    // Check if user exists
+    // Check existing user
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(400).json({ message: "User already exists" });
     }
 
-    // Upload to Cloudinary
-    const cloudinaryRes = await cloudinary.uploader.upload(photo.tempFilePath);
-    if (!cloudinaryRes || cloudinaryRes.error) {
-      return res.status(500).json({ message: "Photo upload failed" });
-    }
+    // Upload image from buffer to Cloudinary
+    const streamUpload = (buffer) => {
+      return new Promise((resolve, reject) => {
+        let stream = cloudinary.uploader.upload_stream(
+          { folder: "user_profiles" },
+          (error, result) => {
+            if (result) resolve(result);
+            else reject(error);
+          }
+        );
+        streamifier.createReadStream(buffer).pipe(stream);
+      });
+    };
+
+    const cloudinaryRes = await streamUpload(req.file.buffer);
 
     // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Create user
     const newUser = await User.create({
       name,
       email,
@@ -45,7 +56,7 @@ export const register = async (req, res) => {
       },
     });
 
-    // Create token
+    // JWT
     const token = await createTokenAndSaveCookies(newUser._id, res);
 
     res.status(201).json({
@@ -64,12 +75,18 @@ export const register = async (req, res) => {
   }
 };
 
-// LOGIN
+
+
+// ================= LOGIN =================
 export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    // Find user & include password
+    if (!email || !password) {
+      return res.status(400).json({ message: "Email and password are required" });
+    }
+
+    // Find user with password
     const user = await User.findOne({ email }).select("+password");
     if (!user) {
       return res.status(400).json({ message: "Invalid email or password" });
@@ -91,7 +108,7 @@ export const login = async (req, res) => {
         _id: user._id,
         name: user.name,
         email: user.email,
-        photo: user.photo, // will be null if not uploaded
+        photo: user.photo,
       },
     });
   } catch (error) {
@@ -100,7 +117,7 @@ export const login = async (req, res) => {
   }
 };
 
-// LOGOUT
+// ================= LOGOUT =================
 export const logout = (req, res) => {
   try {
     res.clearCookie("jwt");

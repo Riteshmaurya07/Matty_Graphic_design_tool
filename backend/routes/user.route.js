@@ -1,19 +1,16 @@
 import express from "express";
-import { login, logout, register } from "../controller/usercontroller.js";
+import { register, login, logout } from "../controller/usercontroller.js";
 import { isAuthenticated } from "../middleware/authUser.js";
+import upload from "../middleware/upload.js";
 import passport from "passport";
-import { User } from "../models/usermodel.js";
-import { v2 as cloudinary } from "cloudinary";
+import {User} from "../models/usermodel.js";
 
-cloudinary.config({
-  cloud_name: process.env.CLOUD_NAME,
-  api_key: process.env.CLOUD_API_KEY,
-  api_secret: process.env.CLOUD_SECRET_KEY,
-});
 
 const router = express.Router();
 
-router.put("/me", isAuthenticated, async (req, res) => {
+// ================= Update Profile =================
+
+router.put("/me", isAuthenticated, upload.single("avatar"), async (req, res) => {
   try {
     const user = await User.findById(req.user._id);
     if (!user) {
@@ -31,33 +28,47 @@ router.put("/me", isAuthenticated, async (req, res) => {
     }
 
     // Upload new avatar if provided
-    if (req.files?.avatar) {
-  const file = req.files.avatar;
-  const uploaded = await cloudinary.uploader.upload(file.tempFilePath, {
-    folder: "avatars",
-    public_id: `${req.user._id}_avatar`,
-    overwrite: true,
-  });
-  user.avatarUrl = uploaded.secure_url;
-}
+    if (req.file) {
+      // Use Cloudinary upload_stream because we are using memoryStorage
+      const uploadStream = cloudinary.uploader.upload_stream(
+        {
+          folder: "avatars",
+          public_id: `${req.user._id}_avatar`,
+          overwrite: true,
+        },
+        async (error, result) => {
+          if (error) {
+            console.error("Cloudinary error:", error);
+            return res.status(500).json({ message: "Cloudinary upload failed" });
+          }
+          user.avatarUrl = result.secure_url;
+          await user.save();
+          return res.json({ success: true, user });
+        }
+      );
 
+      // Pipe buffer into Cloudinary
+      uploadStream.end(req.file.buffer);
+      return; // prevent further execution
+    }
 
     await user.save();
-
     res.json({ success: true, user });
   } catch (err) {
     console.error("Profile update error:", err);
     res.status(500).json({ message: "Server error" });
   }
 });
-// ✅ Google Auth Routes
+
+
+// ================= Google Auth =================
+
 router.get("/google", passport.authenticate("google", { scope: ["profile", "email"] }));
 
 router.get(
   "/google/callback",
   passport.authenticate("google", { failureRedirect: "/login", session: false }),
   (req, res) => {
-    // send HTML page to postMessage token back to opener
     res.send(`
       <html>
         <body>
@@ -67,7 +78,7 @@ router.get(
                 token: "${req.user.token}",
                 user: ${JSON.stringify(req.user)}
               },
-              "http://localhost:5173"
+              "${process.env.FRONTEND_URL || "http://localhost:5173"}"
             );
             window.close();
           </script>
@@ -77,9 +88,9 @@ router.get(
   }
 );
 
+// ================= Auth Routes =================
 
-// ✅ Auth Routes
-router.post("/register", register);
+router.post("/register", upload.single("photo"), register);
 router.post("/login", login);
 router.get("/logout", isAuthenticated, logout);
 

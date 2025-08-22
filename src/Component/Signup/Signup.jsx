@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import "./Signup.css"; // Import the CSS file
+import { Link, useNavigate } from "react-router-dom";
+import "./Signup.css";
 
 function Signup() {
   const [formData, setFormData] = useState({
@@ -9,12 +9,20 @@ function Signup() {
     password: "",
     confirmPassword: "",
   });
+  const [photo, setPhoto] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleFileChange = (e) => {
+    setPhoto(e.target.files[0]);
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (formData.password !== formData.confirmPassword) {
@@ -22,8 +30,41 @@ function Signup() {
       return;
     }
 
-    console.log("Signup Data: ", formData);
-    // TODO: API call for signup goes here
+    if (!photo) {
+      alert("Please upload a profile photo");
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const data = new FormData();
+      data.append("name", formData.name);
+      data.append("email", formData.email);
+      data.append("password", formData.password);
+      data.append("confirmPassword", formData.confirmPassword); // ✅ important
+      data.append("photo", photo); // ✅ field name must match multer ("photo")
+
+      const response = await fetch("http://localhost:4000/api/users/register", {
+        method: "POST",
+        body: data, // browser sets multipart boundary
+        credentials: "include", // keep cookies (if JWT is stored in cookie)
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        alert("Signup successful!");
+        navigate("/login"); // ✅ redirect to login after signup
+      } else {
+        alert(result.message || "Signup failed");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      alert("Something went wrong. Try again later.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -69,10 +110,20 @@ function Signup() {
             required
           />
 
-          <button type="submit">Sign Up</button>
+          <input
+            type="file"
+            name="photo"
+            accept="image/*"
+            onChange={handleFileChange}
+            required
+          />
+
+          <button type="submit" disabled={loading}>
+            {loading ? "Signing up..." : "Sign Up"}
+          </button>
         </form>
 
-        <button className="google-btn">
+        <button className="google-btn" type="button">
           <img
             src="https://www.svgrepo.com/show/355037/google.svg"
             alt="Google"
@@ -82,8 +133,7 @@ function Signup() {
         </button>
 
         <div className="signup-footer">
-          Already have an account?{" "}
-          <Link to="/login">Log In</Link>
+          Already have an account? <Link to="/login">Log In</Link>
         </div>
       </div>
     </div>

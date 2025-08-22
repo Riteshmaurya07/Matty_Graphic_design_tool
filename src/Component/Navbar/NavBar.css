@@ -63,7 +63,7 @@
 
 /* Auth Buttons */
 .btn-login {
-  background: white;
+  background: rgb(0, 0, 0);
   color: #7e22ce;
   padding: 0.25rem 1rem;
   border-radius: 0.5rem;
@@ -77,8 +77,8 @@
 }
 
 .btn-signup {
-  background: #facc15;
-  color: black;
+  background: #100f0f;
+  color: rgb(198, 193, 193);
   padding: 0.25rem 1rem;
   border-radius: 0.5rem;
   font-weight: 600;

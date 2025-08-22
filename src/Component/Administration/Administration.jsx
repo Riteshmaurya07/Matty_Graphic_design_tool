@@ -11,6 +11,7 @@ import {
     Bar,
     Legend
 } from "recharts";
+import "./Administration.css";
 
 const userGrowthData = [
     { month: "Jan", users: 200 },

@@ -3,7 +3,6 @@ import { NavLink } from "react-router-dom";
 import Modal from "react-modal";
 import "./Profile.css";
 
-
 Modal.setAppElement("#root");
 
 function Profile() {
@@ -43,31 +42,27 @@ function Profile() {
   };
 
   if (!user) {
-    return <p className="text-gray-500 text-center mt-10">Please log in first.</p>;
+    return <p className="no-user-msg">Please log in first.</p>;
   }
 
   return (
-    <div className="text-center mt-10">
-      <div className="bg-gray-200 shadow-md rounded-lg p-6 w-full max-w-md mx-auto">
+    <div className="profile-container">
+      <div className="profile-card">
         <img
           src={user.photo?.url || "https://via.placeholder.com/150"}
           alt="profile"
-          className="rounded-full w-40 h-40 object-cover mx-auto"
         />
-        <h2 className="text-xl font-semibold mt-4">{user.name}</h2>
-        <p className="text-gray-600">{user.email}</p>
+        <h2>{user.name}</h2>
+        <p>{user.email}</p>
 
-        <div className="flex items-center justify-center space-x-4 mt-4">
-          <button
-            className="px-5 py-2 rounded-lg bg-gray-500 text-white hover:bg-black transition w-32 border"
-            onClick={() => setEditOpen(true)}
-          >
+        <div className="profile-buttons">
+          <button className="edit-btn" onClick={() => setEditOpen(true)}>
             Edit Profile
           </button>
 
           <NavLink to="/home">
             <button
-              className="px-5 py-2 bg-gray-500 text-white rounded-lg hover:bg-black transition duration-200"
+              className="logout-btn"
               onClick={() => {
                 localStorage.removeItem("user");
                 localStorage.removeItem("jwt");
@@ -85,50 +80,35 @@ function Profile() {
         isOpen={editOpen}
         onRequestClose={() => setEditOpen(false)}
         contentLabel="Edit Profile"
-        className="max-w-xl mx-auto mt-20 bg-white p-6 rounded-2xl shadow-2xl outline-none"
-        overlayClassName="fixed inset-0 bg-black/50 flex justify-center items-start z-50"
+        className="ReactModal__Content"
+        overlayClassName="ReactModal__Overlay"
       >
-        <h2 className="text-2xl font-semibold mb-4">Edit Profile</h2>
-        <div className="flex flex-col items-center space-y-4">
-          <div className="relative w-32 h-32">
-            <img
-              src={editPhoto}
-              alt="preview"
-              className="rounded-full w-32 h-32 object-cover border-2 border-gray-300"
-            />
-            <label
-              htmlFor="fileInput"
-              className="absolute bottom-0 right-0 bg-gray-700 text-white rounded-full p-2 cursor-pointer hover:bg-black transition"
-            >
-              ✎
-            </label>
+        <h2 className="modal-title">Edit Profile</h2>
+        <div className="modal-body">
+          <div className="edit-photo-wrapper">
+            <img src={editPhoto} alt="preview" />
+            <label htmlFor="fileInput">✎</label>
             <input
               id="fileInput"
               type="file"
               accept="image/*"
               onChange={handlePhotoChange}
-              className="hidden"
+              className="hidden-input"
             />
           </div>
 
           <input
             type="text"
-            className="border rounded p-2 w-full text-center"
+            className="modal-input"
             value={editName}
             onChange={(e) => setEditName(e.target.value)}
           />
 
-          <div className="flex space-x-4 mt-4">
-            <button
-              className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
-              onClick={handleSave}
-            >
+          <div className="modal-buttons">
+            <button className="save-btn" onClick={handleSave}>
               Save
             </button>
-            <button
-              className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
-              onClick={() => setEditOpen(false)}
-            >
+            <button className="cancel-btn" onClick={() => setEditOpen(false)}>
               Cancel
             </button>
           </div>

@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
-import "./Login.css"; // ✅ Import CSS file
+import "./Login.css";
 
 export default function Login() {
   const [formData, setFormData] = useState({ email: "", password: "" });
@@ -11,7 +11,13 @@ export default function Login() {
 
   useEffect(() => {
     setIsVisible(true);
-  }, []);
+
+    // ✅ Redirect if already logged in
+    const token = localStorage.getItem("jwt");
+    if (token) {
+      navigate("/administration");
+    }
+  }, [navigate]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -22,7 +28,7 @@ export default function Login() {
     e.preventDefault();
     try {
       const { data } = await axios.post(
-        "http://localhost:4001/api/users/login",
+        "http://localhost:4000/api/users/login",
         formData,
         {
           withCredentials: true,
@@ -31,6 +37,7 @@ export default function Login() {
       );
 
       const userData = {
+        _id: data.user._id,
         name: data.user.name,
         email: data.user.email,
         photo: data.user.photo,
@@ -55,13 +62,13 @@ export default function Login() {
     const top = window.screen.height / 2 - height / 2;
 
     const popup = window.open(
-      "http://localhost:4001/api/users/google",
+      "http://localhost:4000/api/users/google",
       "Google Signup",
       `width=${width},height=${height},top=${top},left=${left}`
     );
 
     const messageHandler = (event) => {
-      if (event.origin !== "http://localhost:4001") return;
+      if (event.origin !== "http://localhost:4000") return;
 
       const { token, user } = event.data;
       if (token && user) {
@@ -81,7 +88,10 @@ export default function Login() {
   return (
     <div className="login-container">
       <main className="login-main">
-        <form onSubmit={handleSubmit} className={`login-form ${isVisible ? "show" : ""}`}>
+        <form
+          onSubmit={handleSubmit}
+          className={`login-form ${isVisible ? "show" : ""}`}
+        >
           <h2>Welcome Back</h2>
           <p>Login to continue where you left off.</p>
 
@@ -109,10 +119,19 @@ export default function Login() {
             />
           </div>
 
-          <button type="submit" className="login-btn">Login</button>
+          <button type="submit" className="login-btn">
+            Login
+          </button>
 
-          <button type="button" onClick={handleGoogleSignup} className="google-btn">
-            <img src="https://www.svgrepo.com/show/355037/google.svg" alt="Google" />
+          <button
+            type="button"
+            onClick={handleGoogleSignup}
+            className="google-btn"
+          >
+            <img
+              src="https://www.svgrepo.com/show/355037/google.svg"
+              alt="Google"
+            />
             <span>Continue with Google</span>
           </button>
 
