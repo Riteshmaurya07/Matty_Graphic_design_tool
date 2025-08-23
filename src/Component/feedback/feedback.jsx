@@ -10,6 +10,10 @@ const FeedbackForm = () => {
   const [alertMessage, setAlertMessage] = useState("");
   const [alertType, setAlertType] = useState("");
 
+  // ✅ Safe backend URL (env or localhost fallback)
+  const backendUrl =
+    import.meta.env.VITE_BACKEND_URI || "http://localhost:4001";
+
   useEffect(() => {
     if (alertMessage) {
       const timer = setTimeout(() => {
@@ -29,13 +33,15 @@ const FeedbackForm = () => {
     }
     setLoading(true);
     try {
-      await axios.post("http://localhost:4001/api/feedback", { rating, comments });
+      await axios.post(`${backendUrl}/api/feedback`, { rating, comments });
       setAlertMessage("Thank you for your feedback!");
       setAlertType("success");
       setRating(0);
       setComments("");
     } catch (error) {
-      setAlertMessage(error.response?.data?.message || "Failed to submit feedback.");
+      setAlertMessage(
+        error.response?.data?.message || "Failed to submit feedback."
+      );
       setAlertType("error");
     } finally {
       setLoading(false);
@@ -49,9 +55,7 @@ const FeedbackForm = () => {
           <h2 className="feedback-title">Share Your Feedback</h2>
 
           {alertMessage && (
-            <div className={`alert ${alertType}`}>
-              {alertMessage}
-            </div>
+            <div className={`alert ${alertType}`}>{alertMessage}</div>
           )}
 
           <form onSubmit={handleSubmit}>
@@ -70,11 +74,14 @@ const FeedbackForm = () => {
                     fill={(hover || rating) >= starValue ? "#facc15" : "none"}
                     stroke="#facc15"
                     strokeWidth="2"
+                    className="star-icon"
                   >
                     <path
                       strokeLinecap="round"
                       strokeLinejoin="round"
-                      d="M12 17.75l-6.172 3.245 1.18-6.877-5-4.873 6.9-1.003L12 2.75l3.092 6.292 6.9 1.003-5 4.873 1.18 6.877z"
+                      d="M12 17.75l-6.172 3.245 1.18-6.877-5-4.873 
+                         6.9-1.003L12 2.75l3.092 6.292 6.9 1.003-5 
+                         4.873 1.18 6.877z"
                     />
                   </svg>
                 );
@@ -100,7 +107,8 @@ const FeedbackForm = () => {
           </form>
 
           <p className="feedback-footer">
-            We appreciate your time and thoughts — they help us make Matty even better.
+            We appreciate your time and thoughts — they help us make Matty even
+            better.
           </p>
         </div>
       </div>

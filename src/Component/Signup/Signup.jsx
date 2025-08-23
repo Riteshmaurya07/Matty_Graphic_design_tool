@@ -14,14 +14,17 @@ function Signup() {
 
   const navigate = useNavigate();
 
+  // Handle text inputs
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  // Handle file input
   const handleFileChange = (e) => {
     setPhoto(e.target.files[0]);
   };
 
+  // Handle form submit
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -38,24 +41,29 @@ function Signup() {
     setLoading(true);
 
     try {
+      // Create multipart form data
       const data = new FormData();
       data.append("name", formData.name);
       data.append("email", formData.email);
       data.append("password", formData.password);
-      data.append("confirmPassword", formData.confirmPassword); // ✅ important
-      data.append("photo", photo); // ✅ field name must match multer ("photo")
+      data.append("confirmPassword", formData.confirmPassword);
+      data.append("photo", photo);
 
-      const response = await fetch("http://localhost:4000/api/users/register", {
+      // ✅ Use .env variable with fallback to localhost
+      const backendUrl =
+        import.meta.env.VITE_BACKEND_URI || "http://localhost:4000";
+
+      const response = await fetch(`${backendUrl}/api/users/register`, {
         method: "POST",
-        body: data, // browser sets multipart boundary
-        credentials: "include", // keep cookies (if JWT is stored in cookie)
+        body: data,
+        credentials: "include", // keep cookies (if backend uses cookies for JWT)
       });
 
       const result = await response.json();
 
       if (response.ok) {
         alert("Signup successful!");
-        navigate("/login"); // ✅ redirect to login after signup
+        navigate("/login");
       } else {
         alert(result.message || "Signup failed");
       }

@@ -9,6 +9,10 @@ export default function Login() {
   const [isVisible, setIsVisible] = useState(false);
   const navigate = useNavigate();
 
+  // ✅ Use backend URL from env with fallback
+  const backendUrl =
+    import.meta.env.VITE_BACKEND_URI || "http://localhost:4000";
+
   useEffect(() => {
     setIsVisible(true);
 
@@ -28,7 +32,7 @@ export default function Login() {
     e.preventDefault();
     try {
       const { data } = await axios.post(
-        "http://localhost:4000/api/users/login",
+        `${backendUrl}/api/users/login`,
         formData,
         {
           withCredentials: true,
@@ -61,14 +65,21 @@ export default function Login() {
     const left = window.screen.width / 2 - width / 2;
     const top = window.screen.height / 2 - height / 2;
 
+    // ✅ Open Google OAuth popup
     const popup = window.open(
-      "http://localhost:4000/api/users/google",
+      `${backendUrl}/api/users/google`,
       "Google Signup",
       `width=${width},height=${height},top=${top},left=${left}`
     );
 
     const messageHandler = (event) => {
-      if (event.origin !== "http://localhost:4000") return;
+      // ✅ Allow both localhost and production origin
+      if (
+        event.origin !== "http://localhost:4000" &&
+        event.origin !== new URL(backendUrl).origin
+      ) {
+        return;
+      }
 
       const { token, user } = event.data;
       if (token && user) {

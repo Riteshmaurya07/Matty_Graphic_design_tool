@@ -7,23 +7,25 @@ import "./ContactForm.css";
 const ContactForm = () => {
   const initialValues = { name: "", email: "", message: "" };
 
+  // Yup Validation Schema
   const validationSchema = Yup.object({
     name: Yup.string().required("Name is required"),
     email: Yup.string().email("Invalid email").required("Email is required"),
     message: Yup.string().required("Message is required"),
   });
 
+  // Get API base URL from .env (with fallback)
+  const API_BASE =
+    import.meta.env.VITE_BACKEND_URI || "http://localhost:4000";
+
   const handleSubmit = async (values, { resetForm, setSubmitting }) => {
     try {
-      await axios.post(
-        process.env.backendUri + "/api/contact" ||
-          "http://localhost:4001/api/contact",
-        values
-      );
+      await axios.post(`${API_BASE}/api/contact`, values);
+
       alert("Message sent successfully!");
       resetForm();
     } catch (error) {
-      console.error(error);
+      console.error("Error sending message:", error);
       alert("Failed to send message. Try again later.");
     } finally {
       setSubmitting(false);
@@ -41,6 +43,7 @@ const ContactForm = () => {
         >
           {({ isSubmitting }) => (
             <Form>
+              {/* Name Field */}
               <div className="form-group">
                 <label className="form-label">Your Name</label>
                 <Field
@@ -56,6 +59,7 @@ const ContactForm = () => {
                 />
               </div>
 
+              {/* Email Field */}
               <div className="form-group">
                 <label className="form-label">Your Email</label>
                 <Field
@@ -71,6 +75,7 @@ const ContactForm = () => {
                 />
               </div>
 
+              {/* Message Field */}
               <div className="form-group">
                 <label className="form-label">Your Message</label>
                 <Field
@@ -87,6 +92,7 @@ const ContactForm = () => {
                 />
               </div>
 
+              {/* Submit Button */}
               <button
                 type="submit"
                 disabled={isSubmitting}
