@@ -1,0 +1,90 @@
+/* index.css */
+
+/* ✅ Reset some default browser styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* ✅ Smooth font rendering */
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: #f9fafb; /* light gray background */
+  color: #1f2937; /* Tailwind gray-800 */
+  line-height: 1.6;
+}
+
+/* ✅ Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+::-webkit-scrollbar-thumb {
+  background: #9ca3af;
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #6b7280;
+}
+
+/* ✅ Links */
+a {
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+a:hover {
+  color: #7c3aed; /* Tailwind purple-600 */
+}
+
+/* ✅ Layout container (for <Layout /> children) */
+.main-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ✅ Content section */
+.content {
+  flex: 1;
+  padding: 2rem;
+}
+
+/* ✅ Floating Chatbot styling */
+.floating-chat {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #7c3aed;
+  color: #fff;
+  padding: 14px 18px;
+  border-radius: 50%;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  z-index: 999;
+}
+.floating-chat:hover {
+  transform: scale(1.1);
+  background: #6d28d9; /* darker purple */
+}
+
+/* ✅ Page Transitions */
+.fade-enter {
+  opacity: 0;
+  transform: translateY(10px);
+}
+.fade-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: all 0.3s ease-in-out;
+}
+.fade-exit {
+  opacity: 1;
+}
+.fade-exit-active {
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out;
+}
