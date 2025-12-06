@@ -68,7 +68,7 @@ export default function Navbar() {
               </li>
               <li>
                 <NavLink to="/signup" className="btn-signup">
-                  Sign Up
+                  SignUp
                 </NavLink>
               </li>
             </>
