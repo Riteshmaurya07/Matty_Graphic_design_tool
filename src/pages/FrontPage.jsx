@@ -1,7 +1,7 @@
 import React from "react";
-import ai_image_head from "../../assets/creative.png";
-import Choose_designHub from "../../assets/Choose_designHub.png";
-import front_page_image from "../../assets/front_page_image.png";
+import ai_image_head from "@/assets/creative.png";
+import Choose_designHub from "@/assets/Choose_designHub.png";
+import front_page_image from "@/assets/front_page_image.png";
 import { NavLink } from "react-router-dom";
 import "./FrontPage.css"; // import css
 
